@@ -1,0 +1,12 @@
+{% load wagtailimages_tags %}
+<div class="timeline-badge">
+    <i class="{{ self.icon_classes }}"></i>
+</div>
+<div class="timeline-panel">
+    <div class="timeline-heading">
+        <h4 class="timeline-title">{{ self.title }}</h4>
+    </div>
+    <div class="timeline-body">
+        <p>{{ self.bound_blocks.description.render }}</p>
+    </div>
+</div>

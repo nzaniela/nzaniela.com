@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n wagtailimages_tags wagtailcore_tags %}
+{% block content %}
+    <div class="new technologies-we-use-heading">
+        {% image page.header_image max-1366x1366 as header_image %}
+        <div class="new static-header dimmed-image slightly-down" style="background-image: url({{ header_image.url }})">
+            <div class="new heading">
+                <p>{{ page.header_text|richtext }}</p>
+            </div>
+            <div class="new scroll-down-arrow">
+                <img class="filer_image " alt="scroll_down_arrow.png"
+                     src="{% static 'images/header/scroll_down_arrow.png' %}"/>
+            </div>
+            <div class="dim"></div>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="section contact-us">
+            <div class="section-content">
+                {{ page.text|richtext }}
+            </div>
+<iframe src="https://www.google.com/maps/embed?pb=!1m20!1m8!1m3!1d3988.8153827068754!2d36.820398014753884!3d-1.2847159990629666!3m2!1i1024!2i768!4f13.1!4m9!3e6!4m3!3m2!1d-1.2847642!2d36.8225146!4m3!3m2!1d-1.2846423!2d36.822618!5e0!3m2!1sen!2ske!4v1505840188230" width="800" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>        </div>
+    </div>
+{% endblock content %}

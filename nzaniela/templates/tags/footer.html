@@ -1,0 +1,42 @@
+{% load staticfiles i18n %}
+{% load wagtailcore_tags %}
+
+<div class="footer background">
+    <div class="footer-container">
+        <div class="vertical-sections-container">
+            <div class="vertical-section">
+                <div class="section-header">
+                    {{ footer.links_text }}
+                </div>
+                <div class="section-content">
+                    <ul>
+                        {% for block in footer.links %}
+                            {{ block }}
+                        {% endfor %}
+                    </ul>
+                    <div class="copyright">
+                        <p>
+                            © 2017 nzaniela.
+                        <p>
+                            <span>Hosted by:</span>
+                            <a href="https://nzaniela.com/" target="_blank"><img class="hosting-partner"
+                                                                             src="{% static 'images/nzaniela.png' %}"></a>
+                        </p>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="vertical-section right footer-contact-text">
+                <div class="section-header">
+                    {{ footer.contact_text }}
+                </div>
+                <div>
+                    {{ footer.popup_text|richtext }}
+                </div>
+                <div class="footer-subscribe">
+                    {% include "external/mailerlite_footer.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

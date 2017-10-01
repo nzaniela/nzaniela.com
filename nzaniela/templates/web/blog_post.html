@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load utils i18n wagtailimages_tags wagtailcore_tags markdown %}
+
+{% block meta %}
+    {% image page.cover_image width-1200 as cover_image %}
+    {% full_url cover_image.url as image_url %}
+    {% include 'web/og_tags.html' with og_title=page.title og_url=page.full_url og_description=page.index_text og_type='article' og_image=image_url %}
+{% endblock meta %}
+
+{% block content %}
+
+<div class="content-wrapper blog-post-page">
+    <div class="article-main-image">
+        {% image page.cover_image width-1200 %}
+    </div>
+    <div class="article-title">
+        <h1>{{ page.title }}</h1>
+    </div>
+    <div class="article-meta">
+        Written by {{ page.authors.all|join:" and " }} posted on: <span>{{ page.date|date:"SHORT_DATE_FORMAT" }}</span>
+    </div>
+    <!--   <div class="article-categories">
+    Categories: {{ page.categories.all|join:", " }}
+  </div> -->
+    <div class="article-toc">
+    </div>
+    <div class="section-content article-text">
+        {% autoescape off %}
+        {{ page.text|markdown }}
+        {% endautoescape %}
+    </div>
+
+    <div class="subscribe">
+        {% include "external/mailerlite_blog_post.html" %}
+    </div>
+
+    <div class="authors float-container">
+        <div class="contact-authors">
+            Meet the authors:
+        </div>
+
+        {% for author in page.authors.all %}
+            <div class="author">
+                {% image author.initial_photo max-200x200 as author_image %}
+                <div class="author_image" style="background-image:url({{ author_image.url }})"></div>
+                <div class="author_name">{{ author.name }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="disqus_thread">
+        {% get_from_settings 'USE_DISQUS' as use_disqus %}
+
+        {% if not request.is_preview and use_disqus %}
+            {% include "external/discus.html" with page=page %}
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://bowercdn.net/c/contents-4.0.2/dist/browser/contents.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var articleId = gajus.Contents.articleId;
+            gajus.Contents.articleId = function (articleName, element) {
+                if (articleName) {
+                    articleName = articleName.split(" ")
+                        .map(function (str) {
+                            return str.trim().toLowerCase();
+                        })
+                        .join('-');
+                }
+
+                return articleId(articleName, element);
+            }
+
+            var toc = gajus.Contents({
+                articles: $(".article-text").find("h1, h2, h3, h4, h5, h6").get()
+            });
+            $(".article-toc").prepend(toc.list());
+        });
+    </script>
+
+
+{% endblock javascript %}

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n wagtailimages_tags wagtailcore_tags %}
+
+{#{% block carousel %}#}
+{#{% include "carousel/carousel.html" with carousel_items=self.carousel_items.all only %}#}
+{##}
+{#{% endblock carousel %}#}
+
+
+{% block content %}
+    <div class="new homepage-header dimmed-image">
+
+        <div class="new header-image-background dimmed-image-background">
+
+            {#            <div class="new overlay"></div>#}
+
+            {#            <div class="video-container" style="background-image:url({% static 'images/homepage-header.png' %})">#}
+            <div class="video-container">
+                <video preload muted loop autoplay id="player">
+                    <source type="video/webm" src="{% static 'nzaniela.webm' %}">
+                </video>
+            </div>
+
+        </div>
+
+
+        <div class="new header-image-frame">
+            <div class="new header-main-text">
+                <h1>{{ page.h1|richtext }}</h1>
+            </div>
+            <div class="new header-info-text">
+                <div class="new info-text">
+                    <p>{{ page.h2|richtext }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="new scroll-down-arrow scroll-down-landpage">
+            <img class="filer_image " alt="scroll_down_arrow.png"
+                 src="{% static 'images/header/scroll_down_arrow.png' %}"/>
+        </div>
+    </div>
+
+    <div class="page-content">
+    <div class="content-wrapper">
+
+        <div class="section home-page-lead">
+            <h1 class="lead-text">{{ page.intro_h1 }}</h1>
+            <h2 class="lead-subtext">{{ page.intro_h2 }}</h2>
+
+            <div class="doodle align-center">
+                {% image page.intro_image original %}
+            </div>
+        </div>
+
+        <div class="section how-we-work">
+
+            <div class="section-heading">
+                <div>
+                    <p>{{ page.how_we_work_title }}</p>
+                </div>
+            </div>
+            <a href="/how-we-work/">
+                {% image page.how_we_work_image max-1280x450 class="how-we-work-image" %}
+            </a>
+        </div>
+
+        <div class="section technologies-we-use">
+            <div class="section-heading">
+                <div>
+                    <p>{{ page.technologies_we_use_title }}</p>
+                </div>
+            </div>
+            <div class="section-content-row">
+                <div class="align-center panda-pic">
+                    {% image page.technologies_we_use_image original as tech_panda %}
+                    <img src="{{ tech_panda.url }}" class="technologies-panda"/>
+                </div>
+                <div class="section-content-row align-center primary-focus-text technologies-text">
+                    {{ page.technologies_we_use_center|richtext }}
+                </div>
+                <div class="section-content-row align-center technologies-logos">
+                    {% for relation in page.technologies_placement.all %}
+                        {% image relation.technology.logo max-100x100 as tech_logo %}
+                        <img src="{{ tech_logo.url }}" class="filter_image" alt="{{ relation.technology.name }}"
+                             title="{{ relation.technology.name }}"/>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="section our-team">
+            <div class="section-heading">
+                <div>
+                    <p>{{ page.our_team_title }}</p>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="section-content-row align-center our-team-text">
+                    {{ page.our_team_center|richtext }}
+                </div>
+                {% image page.team_image_main original as team_photo %}
+                <div class="section-content-row align-center our-team-images"
+                     style="background-image:url({{ team_photo.url }})"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-heading">
+                <div>
+                    <p>{{ page.portfolio_title }}</p>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="section-content-row align-center our-team-text">
+                    <div>
+                        {{ page.portfolio_center|richtext }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row box-container">
+                {% for client in clients %}
+                    <div class="client-box" data-client-number="{{ forloop.counter }}">
+                        {% image client.logo original as client_logo %}
+                        <a href="/our-clients/">
+                            <img src="{{ client_logo.url }}" alt="{{ client.name }}" title="{{ client.name }}"
+                                 class="filter_image box-logo"/>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}

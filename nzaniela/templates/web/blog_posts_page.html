@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n wagtailimages_tags wagtailcore_tags utils %}
+
+{% block meta %}
+    {% image page.header_image width-1200 as header_image %}
+    {% full_url header_image.url as image_url %}
+    {% include 'web/og_tags.html' with og_title=page.title og_url=page.full_url og_description=page.index_text og_type='article' og_image=image_url %}
+{% endblock meta %}
+
+
+{% block content %}
+    <div class="new technologies-we-use-heading">
+        {% image page.header_image max-1366x1366 as header_image %}
+        <div class="new static-header dimmed-image slightly-down" style="background-image: url({{ header_image.url }})">
+            <div class="new heading">
+                <p>{{ page.header_text|richtext }}</p>
+            </div>
+            <div class="new scroll-down-arrow">
+                <img class="filer_image " alt="scroll_down_arrow.png"
+                     src="{% static 'images/header/scroll_down_arrow.png' %}"/>
+            </div>
+            <div class="dim"></div>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+
+        <div class="section-content">
+            {{ page.text|richtext }}
+        </div>
+
+        <div class="featured-article">
+            {% if self.featured_article %}
+                <h1 class="blog-post-section-heading">Featured</h1>
+                <div class="blog-post-container featured-blog-post">
+
+                    <a href="{{ self.featured_article.url }}">
+                        <div class="blog-post">
+                            {% image self.featured_article.cover_image width-600 as tmp_photo %}
+                            <div class="head-image" style="background-image:url({{ tmp_photo.url }})">
+                            </div>
+                            <div class="blog-post-body">
+                                <div class="responsive-author-images">
+                                    {% for author in self.featured_article.authors.all %}
+                                        {% image author.initial_photo width-400 as avatar %}
+                                        <div class="avatar" style="background-image:url({{ avatar.url }})"></div>
+                                    {% endfor %}
+                                </div>
+                                <div class="title">
+                                    {{ self.featured_article.title }}
+                                </div>
+                                <div class="authors">
+                                    {% for author in self.featured_article.authors.all %}
+                                        <div class="author">
+                                            {% image author.initial_photo width-400 as avatar %}
+                                            <div class="avatar" style="background-image:url({{ avatar.url }})"></div>
+                                            <div class="author-name">{{ author.name }}</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="description">
+                                    {{ self.featured_article.index_text }}
+                                </div>
+                                <div class="date">
+                                    Posted: <span>{{ self.featured_article.date|date:"SHORT_DATE_FORMAT" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="blog-posts-container">
+            {% for page in blog_posts.specific %}
+                <div class="blog-post-container">
+
+                    <a href="{{ page.url }}">
+                        <div class="blog-post">
+                            {% image page.cover_image width-600 as tmp_photo %}
+                            <div class="head-image" style="background-image:url({{ tmp_photo.url }})">
+                            </div>
+                            {% for author in page.authors.all %}
+                                {% image author.initial_photo width-150 as avatar %}
+                                <div class="avatar" style="background-image:url({{ avatar.url }})"></div>
+                            {% endfor %}
+                            <div class="blog-post-body">
+                                <div class="title">
+                                    {{ page.title }}
+                                </div>
+                                <div class="authors">
+                                    {% for author in page.authors.all %}
+                                        <div class="author">
+                                            {{ author.name }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="description">
+                                    {{ page.index_text }}
+                                </div>
+                                <div class="date">
+                                    Posted: <span>{{ page.date|date:"SHORT_DATE_FORMAT" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock content %}
