@@ -10,7 +10,7 @@ Collectfast==0.2.3
 coverage==4.2
 decorator==4.1.2
 defusedxml==0.5.0
-Django==1.11.5
+Django==2.2.24
 django-allauth==0.26.1
 django-anymail==0.4.2
 django-autoslug==1.9.3
